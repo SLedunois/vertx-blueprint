@@ -3,6 +3,7 @@ package fr.sledunois.store;
 import fr.sledunois.common.BaseMicroService;
 import fr.sledunois.inventory.InventoryService;
 import io.vertx.core.Promise;
+import io.vertx.core.json.JsonArray;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.servicediscovery.types.EventBusService;
@@ -48,12 +49,7 @@ public class StoreVerticle extends BaseMicroService {
       Retrieve products and render the response to the client
       We use product microservice we previously retrieve from the service discovery
      */
-    inventoryService.getProducts(ar -> {
-      if (ar.failed()) {
-        rc.response().end(ar.cause().toString());
-      } else {
-        rc.response().end(ar.result().encodePrettily());
-      }
-    });
+    circuitBreaker.executeWithFallback(future -> inventoryService.getProducts(future), t -> new JsonArray())
+      .setHandler(ar -> rc.response().end(ar.result().encodePrettily()));
   }
 }

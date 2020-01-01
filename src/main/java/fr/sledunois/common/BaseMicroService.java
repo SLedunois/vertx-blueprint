@@ -1,6 +1,7 @@
 package fr.sledunois.common;
 
 import io.vertx.circuitbreaker.CircuitBreaker;
+import io.vertx.circuitbreaker.CircuitBreakerOptions;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.impl.ConcurrentHashSet;
@@ -23,6 +24,15 @@ public class BaseMicroService extends AbstractVerticle {
   @Override
   public void start() throws Exception {
     discovery = ServiceDiscovery.create(vertx, new ServiceDiscoveryOptions().setBackendConfiguration(config()));
+    CircuitBreakerOptions circuitBreakerOptions = new CircuitBreakerOptions()
+      .setFallbackOnFailure(true)
+      .setMaxFailures(2)
+      .setResetTimeout(5000)
+      .setTimeout(1000);
+
+    circuitBreaker = CircuitBreaker.create("circuit-breaker", vertx, circuitBreakerOptions);
+    circuitBreaker.openHandler(handler -> System.out.println("Circuit breaker opened"))
+      .closeHandler(handler -> System.out.println("Circuit breaker closed"));
   }
 
   protected Future<Void> publishEventBusService(String name, String address, Class serviceClass) {
