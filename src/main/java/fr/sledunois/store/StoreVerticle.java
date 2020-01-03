@@ -22,6 +22,7 @@ public class StoreVerticle extends BaseMicroService {
      */
     Router router = Router.router(vertx);
     router.get("/").handler(this::getProducts);
+    router.get("/records").handler(this::getRecords);
 
     /*
       Retrieve InventoryClass microservice interface using service discovery
@@ -42,6 +43,10 @@ public class StoreVerticle extends BaseMicroService {
           });
       }
     });
+  }
+
+  private void getRecords(RoutingContext rc) {
+    rc.response().end(registeredRecords.toString());
   }
 
   private void getProducts(RoutingContext rc) {

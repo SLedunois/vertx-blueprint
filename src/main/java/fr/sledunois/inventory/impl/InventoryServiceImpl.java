@@ -17,7 +17,7 @@ public class InventoryServiceImpl implements InventoryService {
 
   @Override
   public InventoryService getProducts(Handler<AsyncResult<JsonArray>> handler) {
-    System.out.println("getProducts method in InventoryService");
+    System.out.println("getProducts method in InventoryService from " + System.getenv("HOSTNAME"));
 
     // Timer could not be less than 1ms
     long timeout = 1;
@@ -26,9 +26,7 @@ public class InventoryServiceImpl implements InventoryService {
       timeout = 5000;
     }
 
-    vertx.setTimer(timeout, timer -> {
-      handler.handle(Future.succeededFuture(new JsonArray().add("First product").add("Second product")));
-    });
+    vertx.setTimer(timeout, timer -> handler.handle(Future.succeededFuture(new JsonArray().add(System.getenv("HOSTNAME")))));
 
     return this;
   }

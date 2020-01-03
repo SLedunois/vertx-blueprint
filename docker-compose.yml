@@ -1,0 +1,33 @@
+version: '2'
+services:
+  store1:
+    image: maven:3.6.3-jdk-8-slim
+    container_name: store1
+    working_dir: /home/store
+    networks:
+      - bridge
+    volumes:
+      - ./:/home/store
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+    command: "mvn clean compile exec:java"
+  store2:
+    image: maven:3.6.3-jdk-8-slim
+    container_name: store2
+    working_dir: /home/store
+    networks:
+      - bridge
+    volumes:
+      - ./:/home/store
+    ports:
+      - "8002:8000"
+      - "8003:8001"
+    command: "mvn clean compile exec:java"
+  hazelcast:
+    image: hazelcast/hazelcast
+    ports:
+      - "5701:5701"
+networks:
+  bridge:
+    driver: bridge
