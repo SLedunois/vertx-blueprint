@@ -4,24 +4,25 @@ metadata:
   name: vertx-store
   labels:
     app: vertx
-  spec:
-    replicas: 1
-    selector:
-      matchLabels:
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vertx
+  template:
+    metadata:
+      labels:
         app: vertx
-    template:
-      metadata:
-        labels:
-          app: vertx
-      spec:
-        containers:
-          - name: store
-            images: sledunois/vertx-store:1.0.0
-            ports:
-              - name: verticle-port
-                containerPort: 8000
-                hostPort: 8000
-              - name: hazelcast-port
-                containerPort: 5701
-                hostPort: 5701
-            imagePullPolicy: Always
+    spec:
+      containers:
+        - name: store
+          image: sledunois/vertx-store:1.0.0
+          ports:
+            - name: verticle-port
+              containerPort: 8000
+              hostPort: 8000
+            - name: hazelcast-port
+              containerPort: 5701
+              hostPort: 5701
+          imagePullPolicy: Always
+---
