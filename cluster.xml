@@ -6,16 +6,20 @@
   <properties>
     <property name="hazelcast.discovery.enabled">true</property>
   </properties>
-
+  <group>
+    <name>k8s</name>
+    <password/>
+  </group>
   <network>
     <join>
       <multicast enabled="false"/>
       <tcp-ip enabled="false"/>
 
       <discovery-strategies>
-        <discovery-strategy enabled="true" class="com.hazelcast.kubernetes.HazelcastKubernetesDiscoveryStrategy">
+        <discovery-strategy enabled="true"
+                            class="com.hazelcast.kubernetes.HazelcastKubernetesDiscoveryStrategy">
           <properties>
-            <property name="service-dns">MY-SERVICE-DNS-NAME</property>
+            <property name="service-dns">vertx-store.default.svc.cluster.local</property>
           </properties>
         </discovery-strategy>
       </discovery-strategies>
