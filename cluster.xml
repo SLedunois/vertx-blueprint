@@ -19,7 +19,7 @@
         <discovery-strategy enabled="true"
                             class="com.hazelcast.kubernetes.HazelcastKubernetesDiscoveryStrategy">
           <properties>
-            <property name="service-dns">vertx-store.default.svc.cluster.local</property>
+            <property name="service-dns">kubernetes.default.svc.cluster.local</property>
           </properties>
         </discovery-strategy>
       </discovery-strategies>
