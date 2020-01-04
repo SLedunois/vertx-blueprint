@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hazelcast>
+  <properties>
+    <property name="hazelcast.discovery.enabled">true</property>
+  </properties>
+
+  <network>
+    <join>
+      <multicast enabled="false"/>
+      <tcp-ip enabled="false"/>
+
+      <discovery-strategies>
+        <discovery-strategy enabled="true" class="com.hazelcast.kubernetes.HazelcastKubernetesDiscoveryStrategy">
+          <properties>
+            <property name="service-dns">MY-SERVICE-DNS-NAME</property>
+          </properties>
+        </discovery-strategy>
+      </discovery-strategies>
+    </join>
+  </network>
+</hazelcast>
